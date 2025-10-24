@@ -11,19 +11,21 @@ def main():
     clock = pygame.time.Clock()
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
-    player_triangle = player.Player(x, y)
     dt = 0
-
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    player.Player.containers = (updatable, drawable)
+    player_triangle = player.Player(x, y)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        screen.fill((0, 0, 0))
-        player_triangle.draw(screen)
         dt = clock.tick(60) / 1000
-        player_triangle.update(dt)
+        updatable.update(dt)
+        screen.fill((0, 0, 0))
+        for sprite in drawable:
+            sprite.draw(screen)
         pygame.display.flip()
-        clock.tick(60)
 
 
 if __name__ == "__main__":
